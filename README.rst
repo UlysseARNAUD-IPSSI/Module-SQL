@@ -11,28 +11,28 @@ Si vous ne disposez pas déjà d'un compte `Github <https://github.com>`_, il fa
 
 Forkez (avec le bouton ``Fork`` en haut à droite) ce projet. Il contient toutes les ressources nécessaires pour ce cours. Vous pourrez ajouter des notes, modifier le code, et pousser votre projet final directement pour que l'on puisse l'évaluer.
 
-Pour commencer à travailler il vous faut cloner le projet dans votre répertoire (local) de travail : 
+Pour commencer à travailler il vous faut cloner le projet dans votre répertoire (local) de travail :
 
 .. code-block:: bash
 
   $:~/> cd <WORKDIR>
-  $:~/<WORKDIR> > git clone https://github.com/<GITHUB_NAME>/DataEngineerTools
-  $:~/<WORKDIR> > cd DataEngineerTools/
+  $:~/<WORKDIR> > git clone https://github.com/UlysseARNAUD-IPSSI/Module-SQL.git
+  $:~/<WORKDIR> > cd Module-SQL/
   $:~/<WORKDIR> > ls
   Dockerfile  Evaluation  Introduction  Mongo  Pipfile  Pipfile.lock  README.rst  Scrapy  requirements.txt
-  
+
 Si au fil du temps j'ai besoin de modifier le contenu en temps réel vous pouvez garder votre projet à jour en ajoutant ces quelques commandes :
 
 .. code-block:: bash
 
   $:~/> cd <WORKDIR>
-  $:~/<WORKDIR>cd DataEngineerTools/
-  $:~/<WORKDIR>/DataEngineerTools>git remote add basestream https://github.com/rcourivaud/DataEngineerTools
-  $:~/<WORKDIR>/DataEngineerTools>git fetch basestream
+  $:~/<WORKDIR>cd Module-SQL/
+  $:~/<WORKDIR>/Module-SQL>git remote add basestream https://github.com/UlysseARNAUD-IPSSI/Module-SQL.git
+  $:~/<WORKDIR>/Module-SQL>git fetch basestream
 
 Maintenant pour mettre à jour le projet :
 
-  $:~/<WORKDIR>/DataEngineerTools>git pull basestream master
+  $:~/<WORKDIR>/Module-SQL>git pull basestream master
 
 Pipenv
 ------
@@ -42,7 +42,7 @@ Vous pouvez voir qu'il y a trois fichiers disponibles dans le dossier de travail
 - Pipfile
 - Pipfile.lock
 
-Le fichier requirements.txt permet de lister toutes les librairies dont vous aurez besoin pour lancer et exécuter votre projet. Cette méthode est assez ancienne, vous pouvez cependant utiliser : 
+Le fichier requirements.txt permet de lister toutes les librairies dont vous aurez besoin pour lancer et exécuter votre projet. Cette méthode est assez ancienne, vous pouvez cependant utiliser :
 
 .. code-block:: bash
 
@@ -52,16 +52,16 @@ Le fichier requirements.txt permet de lister toutes les librairies dont vous aur
 Pipenv est développé par @kennethreitz, un pilier dans la communauté de Python, vous pouvez accéder à la documentation de pipenv https://pipenv.readthedocs.io/en/latest/
 
 Pour faire simple, Pipenv permet de créer un environnment virtuel propre pour votre projet. Toutes les librairies sont listées dans le fichier `Pipfile`.
-Le Pipfile.lock référence les versions d'installation de toutes les librairies, un hash est aussi stocké permettant de vérifier la cohérence avec les librairies déclarées et celles installées. 
+Le Pipfile.lock référence les versions d'installation de toutes les librairies, un hash est aussi stocké permettant de vérifier la cohérence avec les librairies déclarées et celles installées.
 
-Pour installer pipenv : 
+Pour installer pipenv :
 
 .. code-block:: bash
 
   > pip install pipenv
 
 
-Pour installer l'environnment : 
+Pour installer l'environnment :
 
 .. code-block:: bash
 
@@ -73,7 +73,7 @@ Vous pouvez ensuite lancer un terminal à l'interieur de cet environnment:
 
   > pipenv shell
 
-Si vous voulez installer de nouvelles librairies dont vous avez besoin pour votre projet : 
+Si vous voulez installer de nouvelles librairies dont vous avez besoin pour votre projet :
 
 .. code-block:: bash
 
@@ -89,7 +89,7 @@ Afin de pouvoir travailler dans les meilleurs conditions, nous allons travailler
 Créer une image
 ...............
 
-Pour créer l'image utilisée dans le projet, on utilise le ``Dockerfile`` présent dans le répertoire (jeter un oeil à ce fichier pour comprendre les composants utilisés)  : 
+Pour créer l'image utilisée dans le projet, on utilise le ``Dockerfile`` présent dans le répertoire (jeter un oeil à ce fichier pour comprendre les composants utilisés)  :
 
 
 .. code-block::
@@ -106,7 +106,7 @@ Pour créer l'image utilisée dans le projet, on utilise le ``Dockerfile`` prés
   WORKDIR /home/dev/code/
 
   # Proxies de l'esiee
-  ENV http_proxy http://147.215.1.189:3128 
+  ENV http_proxy http://147.215.1.189:3128
   ENV https_proxy http://147.215.1.189:3128
 
   # On copie l'ensemble des fichiers directement dans le dossier de travail du conteneur
@@ -123,7 +123,7 @@ Pour créer l'image utilisée dans le projet, on utilise le ``Dockerfile`` prés
 .. code-block:: bash
 
   > docker build -t image_drio  .
-  
+
   Sending build context to Docker daemon  40.41MB
   Step 1/6 : FROM python:3
   ---> c1e459c00dc3
@@ -165,32 +165,32 @@ L'opération se termine correctement si ``Successfully built`` est affiché. La 
 Créer un conteneur
 ..................
 
-A partir de cette image, on peut créer une instance (conteneur) dans lequel on va travailler (on remplacera ``<WORKDIR>`` par son propre répertoire de travail) : 
+A partir de cette image, on peut créer une instance (conteneur) dans lequel on va travailler (on remplacera ``<WORKDIR>`` par son propre répertoire de travail) :
 
 .. code-block:: bash
 
   > docker run -it --name conteneur_drio -v `pwd`:/home/dev/code/ -p 8888:8888 image_drio
-  
+
   root@a74861d489f5:/home/dev/code# python
-  Python 3.6.4 (default, Dec 21 2017, 01:35:12) 
+  Python 3.6.4 (default, Dec 21 2017, 01:35:12)
   [GCC 4.9.2] on linux
   Type "help", "copyright", "credits" or "license" for more information.
-  >>> 
+  >>>
 
-Le prompt ``#`` est celui du conteneur dans lequel on est ``root``. On peut alors lancer les commandes incluses dans le conteneur(ici l'interpréteur Python). 
- 
+Le prompt ``#`` est celui du conteneur dans lequel on est ``root``. On peut alors lancer les commandes incluses dans le conteneur(ici l'interpréteur Python).
+
 .. note::
 
   Il n'est pas rare de lancer plusieurs conteneurs instanciés à partir de la même image. Contrairement à une machine virtuelle, docker utilise la même base et les mêmes composants pour tous ces conteneurs et donc réduire l'impact mémoire de ces derniers.
 
-Pour revenir un peu sur la commande ``docker run -it --name conteneur_drio -v `pwd`:/home/dev/code/ image_drio`` 
+Pour revenir un peu sur la commande ``docker run -it --name conteneur_drio -v `pwd`:/home/dev/code/ image_drio``
 
 - docker run : permet de lancer un conteneur à partir d'une image (ici image_drio)
 - -it permet de passer en mode intéractif, ie: le terminal du conteneur prend la main sur le terminal de votre machine
-- --name conteneur_drio donne un petit nom au conteneur pour pouvoir le trouver plus facilement 
+- --name conteneur_drio donne un petit nom au conteneur pour pouvoir le trouver plus facilement
 - -v `pwd`:/home/dev/code/ permet de faire mapping entre le dossier à l'intérieur du conteneur et le dossier de votre machine, ie: tous les modifications de fichier dans votre conteneur ou sur votre machine se répercuteront respectivement sur votre machine et dans votre conteneur.
 - image_drio est le nom de l'image à utiliser pour créer votre conteneur
-  
+
 MongoDB
 .......
 
@@ -200,10 +200,10 @@ Dans ce cours nous allons aussi utiliser MongoDB. Normalement il est installé p
 
   docker run --name mon-mongo -v <STOCKAGE_DIRECTORY>:/data/db -p 27017:27017 -d mongo
 
-Un nouveau paramètre dans cette commande: 
-- -p permet de mapper les ports du conteneur avec le port de la machine qui l'heberge. 
+Un nouveau paramètre dans cette commande:
+- -p permet de mapper les ports du conteneur avec le port de la machine qui l'heberge.
 
-Docker par défault crée des machines complètement indépendantes et fermées. C'est pour cela qu'il faut lui spécifier explicitement quand on veut ouvrir un dossier ou un port. 
+Docker par défault crée des machines complètement indépendantes et fermées. C'est pour cela qu'il faut lui spécifier explicitement quand on veut ouvrir un dossier ou un port.
 
 Redis
 .....
@@ -211,8 +211,8 @@ Redis
 .. code-block:: bash
 
   docker run -d --name redis -p 6379:6379 redis
-  
-  
+
+
 ElasticSearch
 .....
 
@@ -224,36 +224,36 @@ ElasticSearch
 Docker Compose
 ..............
 
-Pour faciliter les développments, un fichier docker-compose est disponible. Il permet d'instancier toutes les bases de données et l'image principale. 
+Pour faciliter les développments, un fichier docker-compose est disponible. Il permet d'instancier toutes les bases de données et l'image principale.
 
 
-Pour le lancer 
+Pour le lancer
 
 .. code-block:: bash
 
   docker-compose up -d
 
-Vous voyez toutes les machines se lancer. Allez voir dans le fichier `docker-compose.yml` 
-   
+Vous voyez toutes les machines se lancer. Allez voir dans le fichier `docker-compose.yml`
+
 Consignes
 ---------
-  
-L'ensemble des exercices présents dans les différents cours doivent être complétés directement dans les notebooks et mis à jours sur vos comptes Github respectifs. 
+
+L'ensemble des exercices présents dans les différents cours doivent être complétés directement dans les notebooks et mis à jours sur vos comptes Github respectifs.
 
 Le projet doit être placé dans le dossier ``Evaluation/Projet`` avec la totalité du code de l'application. Vous devez aussi remplir les fichiers README.rst correspondants, ce qui permet de faire une documentation élémentaire.
 
 Il est conseillé de travailler en local lors de chaque séance, puis de pusher son travail en fin de séance sur le repository Github.
 
 .. code-block:: bash
-  
+
    > git add .
    > git commit -m "message explicatif"
    > git push origin master
-   
+
 Au début de la séance suivante, on récupère les éventuelles modifications apportées entre temps avec  :
- 
+
 .. code-block:: bash
-  
+
    > git pull
 
-Si vous travaillez sur une machine locale différente, il faut recloner le projet. 
+Si vous travaillez sur une machine locale différente, il faut recloner le projet.
