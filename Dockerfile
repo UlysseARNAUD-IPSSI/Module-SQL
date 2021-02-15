@@ -8,7 +8,10 @@ WORKDIR /home/dev/code/
 #ENV https_proxy http://147.215.1.189:3128
 
 COPY . .
-RUN  pip install --upgrade pip &&  pip install pipenv && pipenv install --skip-lock
+RUN  pip install --upgrade pip && \
+  pip install pipenv && \
+  pip install pandasql && \
+  pipenv install --skip-lock
 
 CMD ["pipenv", "run", "jupyter", "notebook", "--ip=0.0.0.0", "--no-browser", "--allow-root", "--NotebookApp.token=''"]
 #CMD ["/bin/bash"]

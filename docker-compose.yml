@@ -41,4 +41,3 @@ services:
     command: ["pipenv", "run", "jupyter", "notebook", "--ip=0.0.0.0", "--no-browser", "--allow-root", "--NotebookApp.token=''"]
     volumes:
       - ./:/home/dev/code/
-  
